@@ -26,17 +26,20 @@ def main(ns):
         list = kubectl.list_namespaced_pod(namespace=ns)
     except AttributeError  as e:
         print(f"Error {e}")
-    for pod in list.items:
-        phase = pod.status.phase
-        if phase in ("Succeeded", "Failed"):
-            not_running.append(pod.metadata.name)
-    body = client.V1DeleteOptions()
-    for i in not_running:
-        try:
-            print(f"deleting pod {i}")
-            kubectl.delete_namespaced_pod(i, ns, body=body)
-        except:
-            print("Error maybe there are no pods to delete")
+    else:
+        for pod in list.items:
+            phase = pod.status.phase
+            if phase in ("Succeeded", "Failed"):
+                not_running.append(pod.metadata.name)
+        body = client.V1DeleteOptions()
+        for i in not_running:
+            try:
+                print(f"deleting pod {i}")
+                kubectl.delete_namespaced_pod(i, ns, body=body)
+            except:
+                print("Error maybe there are no pods to delete")
+    finally:
+        print(f"End of the function")
 
 if __name__ == "__main__":
     main("default")
