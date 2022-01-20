@@ -1,1 +1,1 @@
-# python-k8s
+# k8s-api-client examples
