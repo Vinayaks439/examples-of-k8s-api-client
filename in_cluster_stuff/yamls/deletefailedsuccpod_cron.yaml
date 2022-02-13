@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: deletefailedsuccpod_dep
+  name: deletefailedsuccpod-dep
 spec:
   schedule: "0 0 * * 1"
   concurrencyPolicy: Forbid
@@ -11,11 +11,7 @@ spec:
         spec:
           serviceAccountName: incluster-sa
           containers:
-          - name: deletefailedsuccpod_dep
+          - name: deletefailedsuccpod-dep
             image: vinayaks439/deletesucceededfailedpo:v1
             imagePullPolicy: Always
-            command:
-            - /bin/sh
-            - -c
-            - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
