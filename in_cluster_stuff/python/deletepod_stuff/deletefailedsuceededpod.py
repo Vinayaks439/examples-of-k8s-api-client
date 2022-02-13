@@ -2,8 +2,8 @@ from kubernetes import client, config
 
 def main(ns):
     config.load_incluster_config()
-
-    v1 = client.CoreV1Api()
+    not_running = []
+    kubectl = client.CoreV1Api()
     try:
         list = kubectl.list_namespaced_pod(namespace=ns)
     except AttributeError  as e:

@@ -1,7 +1,7 @@
-FROM python3.7.3
+FROM python:3.7.3
 
 RUN pip3 install -U pip \
-    && pip3 install -r requirements.txt
+    && pip3 install kubernetes
   
 WORKDIR /usr/local/bin
 
