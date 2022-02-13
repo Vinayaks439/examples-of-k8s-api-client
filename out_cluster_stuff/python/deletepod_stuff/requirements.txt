@@ -1,4 +1,0 @@
-google-auth
-google-cloud-container
-kubernetes
-requests

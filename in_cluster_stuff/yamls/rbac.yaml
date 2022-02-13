@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: incluster-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: incluster-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list","delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: incluster-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: incluster-sa
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: incluster-role
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deletefailedsuccpod_dep
+  namespace: default
+  labels:
+    app: deletefailedsuccpods
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deletefailedsuccpods
+  template:
+    metadata:
+      labels:
+        app: deletefailedsuccpods
+    spec:
+      serviceAccountName: incluster-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1234
+      containers:
+      - name: deletefailedsuccpods
+        image: vinayaks439/deletesucceededfailedpo:v1
+        imagePullPolicy: Always
