@@ -1,6 +1,6 @@
 # Kubernetes API client Examples
 
-This repo contains code in both python and golang which uses both [kubernetes-client/python](https://github.com/kubernetes-client/python) and [kubernetes/client-go](https://github.com/kubernetes/client-go) libraries for understand and writing scripts to perform some automation tasks on a k8s cluster.
+This repo contains code in both python and golang which uses both [kubernetes-client/python](https://github.com/kubernetes-client/python) and [kubernetes/client-go](https://github.com/kubernetes/client-go) libraries for understanding and writing scripts to perform some automation tasks on a k8s cluster.
 
 ## Folder Structure
 
