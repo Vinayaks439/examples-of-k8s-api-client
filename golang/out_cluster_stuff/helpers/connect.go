@@ -11,11 +11,13 @@ import (
 )
 
 func Connect(projectID, clusterID, zone string) *api.Config {
+	log.Println("Reading ADC of the GCP service account for deleting the po, loading context")
 	ctx := context.Background()
 	c, err := container.NewService(ctx)
 	if err != nil {
 		log.Fatalln("Error initalizing ADC, please check env var GOOGLE_APPLICATION_CREDENTIALS", err)
 	}
+	log.Println("Fetching the cluster information : " + clusterID)
 	cluster, err := c.Projects.Zones.Clusters.Get(projectID, zone, clusterID).Context(ctx).Do()
 	if err != nil {
 		log.Fatalln("Falied to fetch the cluster, Please check if you have enough perms", err)
@@ -24,6 +26,7 @@ func Connect(projectID, clusterID, zone string) *api.Config {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	log.Println("Instantiating the Config object which is equivalent to ~/.kube/config")
 	config := api.Config{
 		APIVersion: "v1",
 		Kind:       "Config",
@@ -31,6 +34,7 @@ func Connect(projectID, clusterID, zone string) *api.Config {
 		AuthInfos:  map[string]*api.AuthInfo{},
 		Contexts:   map[string]*api.Context{},
 	}
+	log.Println("Fetching the config information to set kubeconfig for the cluster : " + clusterID)
 	config.Clusters[cluster.Name] = &api.Cluster{
 		Server:                   "https://" + cluster.Endpoint,
 		CertificateAuthorityData: cacert,
