@@ -6,8 +6,9 @@ import (
 )
 
 func main() {
-	projectID := os.Getenv("PROJECT_ID")
-	clusterID := os.Getenv("CLUSTER_ID")
-	zone := os.Getenv("ZONE")
-	helpers.Connect(projectID, clusterID, zone)
+	var projectID = os.Getenv("PROJECT_ID")
+	var clusterID = os.Getenv("CLUSTER_ID")
+	var zone = os.Getenv("ZONE")
+	con := helpers.Connect(projectID, clusterID, zone)
+	helpers.Createcontext(con, projectID)
 }

@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"google.golang.org/api/container/v1"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
@@ -26,6 +27,9 @@ func Connect(projectID, clusterID, zone string) *api.Config {
 	config := api.Config{
 		APIVersion: "v1",
 		Kind:       "Config",
+		Clusters:   map[string]*api.Cluster{},
+		AuthInfos:  map[string]*api.AuthInfo{},
+		Contexts:   map[string]*api.Context{},
 	}
 	config.Clusters[cluster.Name] = &api.Cluster{
 		Server:                   "https://" + cluster.Endpoint,
