@@ -3,7 +3,9 @@ package helpers
 import (
 	"context"
 	"log"
+	"time"
 
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -33,12 +35,29 @@ func DeletePo(config *api.Config, projectID, namespace string) {
 		}
 		log.Println("Listing the pods in the namespace :" + namespace)
 		listpo, err := kubectl.CoreV1().Pods(namespace).List(ctx, metav1.ListOptions{})
+		if err != nil {
+			log.Fatalln("Failed to list pods in namespace :" + namespace)
+		}
 		for _, item := range listpo.Items {
 			log.Println("Deleting the pods in the namespace :" + namespace + " Pod name : " + item.Name)
 			err = kubectl.CoreV1().Pods(namespace).Delete(ctx, item.Name, metav1.DeleteOptions{})
 			if err != nil {
 				log.Fatalln("Error while deleting the pod : "+item.Name+" In the namespace : "+namespace+" Please check the error", err)
 			}
+			afterdeletelist, err := kubectl.CoreV1().Pods(namespace).Watch(ctx, metav1.ListOptions{})
+			if err != nil {
+				log.Fatalln("Failed to list pods in namespace :" + namespace)
+			}
+			go func() {
+				for event := range afterdeletelist.ResultChan() {
+					p, ok := event.Object.(*v1.Pod)
+					if !ok {
+						log.Fatal("unexpected type")
+					}
+					log.Println("The Status of the Pod is : " + p.Status.Phase)
+				}
+			}()
+			time.Sleep(20 * time.Second)
 		}
 	}
 }
