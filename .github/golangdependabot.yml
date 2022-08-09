@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
+  - package-ecosystem: "gomod" # See documentation for possible values
     directory: "/golang/out_cluster_stuff" # Location of package manifests
     schedule:
       interval: "weekly"
